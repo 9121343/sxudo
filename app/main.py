@@ -100,7 +100,7 @@ There are actually millions of colors visible to humans - roughly 10 million dif
 
 📱 **Premium Segment (₹80,000+):**
 • iPhone 15 Pro/Pro Max - Excellent cameras, premium build
-�� Samsung Galaxy S24 Ultra - S Pen, great cameras, large display
+• Samsung Galaxy S24 Ultra - S Pen, great cameras, large display
 • Google Pixel 8 Pro - Best Android camera AI
 
 💎 **Mid-Premium (₹40,000-80,000):**
@@ -335,6 +335,44 @@ async def clear_memory(username: str):
         return JSONResponse({"message": "Memory cleared successfully"})
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Memory clear error: {str(e)}")
+
+@app.post("/api/configure-ollama")
+async def configure_ollama(config: OllamaConfig):
+    """Configure remote Ollama connection"""
+    global OLLAMA_HOST
+
+    # Validate the connection
+    test_host = f"http://{config.host}:{config.port}"
+
+    try:
+        import httpx
+        async with httpx.AsyncClient() as client:
+            response = await client.get(f"{test_host}/api/version", timeout=5.0)
+            if response.status_code == 200:
+                OLLAMA_HOST = test_host
+                os.environ["OLLAMA_HOST"] = test_host
+
+                # Try to get models
+                models_response = await client.get(f"{test_host}/api/tags", timeout=5.0)
+                models = []
+                if models_response.status_code == 200:
+                    models_data = models_response.json()
+                    models = [model["name"] for model in models_data.get("models", [])]
+
+                return JSONResponse({
+                    "success": True,
+                    "message": f"Successfully connected to Ollama at {test_host}",
+                    "models": models
+                })
+            else:
+                raise Exception(f"HTTP {response.status_code}")
+
+    except Exception as e:
+        return JSONResponse({
+            "success": False,
+            "error": f"Failed to connect to Ollama at {test_host}: {str(e)}",
+            "suggestion": "Make sure Ollama is running and accessible from this server"
+        }, status_code=400)
 
 @app.get("/api/health")
 async def health_check():
