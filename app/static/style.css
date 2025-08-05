@@ -453,6 +453,42 @@ body {
     display: block;
 }
 
+.connection-info {
+    background: var(--surface);
+    padding: 12px;
+    border-radius: var(--border-radius-sm);
+    margin: 10px 0;
+    border: 1px solid var(--border);
+}
+
+.connection-info ul {
+    margin: 8px 0 0 0;
+    padding-left: 20px;
+}
+
+.connection-info li {
+    margin: 4px 0;
+    font-size: 0.9rem;
+}
+
+.connection-info code {
+    background: #f1f5f9;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.85rem;
+}
+
+.network-note {
+    margin-top: 15px;
+    padding: 10px;
+    background: #fef3c7;
+    border: 1px solid #f59e0b;
+    border-radius: var(--border-radius-sm);
+    color: #92400e;
+    font-size: 0.85rem;
+}
+
 /* Loading and Voice Indicators */
 .loading-indicator,
 .voice-indicator {
