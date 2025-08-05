@@ -521,6 +521,23 @@ class SXUDOChat {
                 })
             });
 
+            if (!response.ok) {
+                const errorText = await response.text();
+                let errorData;
+                try {
+                    errorData = JSON.parse(errorText);
+                } catch {
+                    errorData = { error: `HTTP ${response.status}: ${errorText}` };
+                }
+
+                if (response.status === 400) {
+                    this.showOllamaStatus(`❌ ${errorData.error}\n💡 ${errorData.suggestion || 'Make sure Ollama is running and accessible'}`, 'error');
+                } else {
+                    this.showOllamaStatus(`❌ Connection failed: ${errorData.error}`, 'error');
+                }
+                return;
+            }
+
             const data = await response.json();
 
             if (data.success) {
@@ -531,7 +548,12 @@ class SXUDOChat {
                 this.showOllamaStatus(`❌ ${data.error}`, 'error');
             }
         } catch (error) {
-            this.showOllamaStatus(`❌ Connection failed: ${error.message}`, 'error');
+            console.error('Connection error:', error);
+            if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+                this.showOllamaStatus(`❌ Network error: Cannot reach ${host}:${port}\n💡 Check if the IP address is correct and Ollama is running`, 'error');
+            } else {
+                this.showOllamaStatus(`❌ Connection failed: ${error.message}`, 'error');
+            }
         } finally {
             this.connectOllama.disabled = false;
         }
