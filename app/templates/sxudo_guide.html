@@ -70,7 +70,21 @@ ollama serve
     </div>
 
     <div class="step">
-        <h3>🔄 Alternative: Test SXUDO Model Locally</h3>
+        <h3>🌐 Alternative: Use Ngrok for Public Access</h3>
+        <p>If you want to expose your Ollama to the internet securely:</p>
+        <div class="command">
+# Download and install ngrok from https://ngrok.com/
+# Then run:
+ngrok http 11434
+
+# This will give you a public URL like:
+# https://abc123.ngrok.io
+# Use this URL in the SXUDO app settings
+        </div>
+    </div>
+
+    <div class="step">
+        <h3>🔄 Test SXUDO Model Locally</h3>
         <p>You can also test your model directly:</p>
         <div class="command">
 # Test your model via API
