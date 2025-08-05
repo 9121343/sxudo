@@ -47,6 +47,112 @@ class ChatResponse(BaseModel):
 # Constants
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
 
+def generate_intelligent_demo_response(message: str, username: str, history: list) -> str:
+    """Generate intelligent demo responses when Ollama is not available"""
+    message_lower = message.lower().strip()
+
+    # Greeting responses
+    if any(word in message_lower for word in ["hello", "hi", "hey", "heyy", "greetings"]):
+        return f"Hello {username}! I'm SXUDO, your emotionally intelligent AI assistant created by Madhur Kharade. I'm here to help you with any questions, provide support, or just have a friendly conversation. How can I assist you today?"
+
+    # Einstein question
+    if "einstein" in message_lower:
+        return """Albert Einstein (1879-1955) was one of the most influential physicists in history! Here are some key facts about him:
+
+🧠 **Revolutionary Theories:**
+• Developed the theory of special relativity (1905) with the famous equation E=mc²
+• Created the theory of general relativity (1915), revolutionizing our understanding of gravity
+• Won the Nobel Prize in Physics (1921) for his work on photoelectric effect
+
+🌟 **Key Contributions:**
+• Showed that space and time are interconnected (spacetime)
+• Predicted black holes, gravitational waves, and GPS satellite corrections
+• Laid groundwork for quantum mechanics and modern cosmology
+
+💭 **Philosophy:** Known for quotes like "Imagination is more important than knowledge" and "The important thing is not to stop questioning."
+
+Einstein fundamentally changed how we understand the universe!"""
+
+    # Colors/sky question
+    if any(word in message_lower for word in ["color", "colour", "sky"]):
+        return """The sky appears blue during the day due to a fascinating physics phenomenon called **Rayleigh scattering**!
+
+🌈 **Why the sky is blue:**
+• Sunlight contains all colors of the rainbow
+• Blue light has a shorter wavelength than red light
+• When sunlight hits Earth's atmosphere, blue light gets scattered more in all directions
+• This makes the sky appear blue to our eyes
+
+🌅 **Other sky colors:**
+• **Sunrise/Sunset:** Orange/red (light travels through more atmosphere)
+• **Night:** Black/dark blue (no sunlight to scatter)
+• **Storms:** Gray/dark (clouds block and scatter light differently)
+
+There are actually millions of colors visible to humans - roughly 10 million different shades!"""
+
+    # Phone recommendations
+    if "phone" in message_lower and "india" in message_lower:
+        return """Here are some of the best phones in India across different price ranges:
+
+📱 **Premium Segment (₹80,000+):**
+• iPhone 15 Pro/Pro Max - Excellent cameras, premium build
+• Samsung Galaxy S24 Ultra - S Pen, great cameras, large display
+• Google Pixel 8 Pro - Best Android camera AI
+
+💎 **Mid-Premium (₹40,000-80,000):**
+• OnePlus 12 - Fast charging, great performance
+• iPhone 14/15 - Reliable, long software support
+• Samsung Galaxy S23 FE - Good all-rounder
+
+💰 **Mid-Range (₹20,000-40,000):**
+• Nothing Phone 2 - Unique design, clean Android
+• Pixel 7a - Excellent cameras for price
+• Samsung Galaxy A54 - Good display, cameras
+
+🔥 **Budget (Under ₹20,000):**
+• Poco X6 - Great performance for gaming
+• Realme 12 Pro - Good cameras, fast charging
+• Samsung Galaxy M34 - Long battery life
+
+**Recommendation:** Consider your priorities - camera, gaming, battery, or overall experience!"""
+
+    # Colors question
+    if "how many" in message_lower and "color" in message_lower:
+        return """Great question! The number of colors depends on how we define and perceive them:
+
+🎨 **Human Vision:**
+• Humans can distinguish approximately **10 million different colors**
+• We have 3 types of color receptors (red, green, blue cones)
+• This gives us "trichromatic" color vision
+
+🌈 **Visible Spectrum:**
+• Contains infinite gradations between wavelengths (~380-750 nanometers)
+• Traditional rainbow has 7 main colors: Red, Orange, Yellow, Green, Blue, Indigo, Violet
+
+💻 **Digital Colors:**
+• RGB: 16.7 million possible combinations (256³)
+• Pantone system: ~2,000+ standardized colors
+• Web colors: 140 named colors in CSS
+
+🔬 **Beyond Human Vision:**
+• UV and infrared light contain "colors" we can't see
+• Some animals see many more colors than humans
+• Mantis shrimp can see 16 types of color receptors (vs our 3)!
+
+So the answer ranges from 7 basic colors to millions of distinguishable shades!"""
+
+    # Default intelligent response
+    responses = [
+        f"That's an interesting question, {username}! While I'm currently running in demonstration mode, I can still help you explore ideas and provide thoughtful responses. What specific aspect would you like to dive deeper into?",
+        f"Hello {username}! I appreciate you reaching out. Even in demo mode, I'm designed to be helpful and engaging. Could you tell me more about what you're looking for?",
+        f"Great to chat with you, {username}! I'm SXUDO, created by Madhur Kharade to be emotionally intelligent and supportive. What's on your mind today?",
+        f"Hi {username}! While I'm running in demonstration mode, I'm still here to help with questions, provide information, or just have a friendly conversation. How can I assist you?"
+    ]
+
+    # Use a simple hash of the message to pick a consistent response
+    response_index = hash(message_lower) % len(responses)
+    return responses[response_index]
+
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     """Main chat interface"""
