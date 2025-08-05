@@ -560,9 +560,26 @@ class SXUDOChat {
     }
 
     showOllamaStatus(message, type) {
-        this.ollamaStatus.textContent = message;
+        // Handle multi-line messages
+        const lines = message.split('\n');
+        this.ollamaStatus.innerHTML = '';
+
+        lines.forEach((line, index) => {
+            const p = document.createElement('p');
+            p.textContent = line;
+            if (index > 0) p.style.marginTop = '5px';
+            this.ollamaStatus.appendChild(p);
+        });
+
         this.ollamaStatus.className = `status-message ${type}`;
         this.ollamaStatus.style.display = 'block';
+
+        // Auto-hide success messages after 5 seconds
+        if (type === 'success') {
+            setTimeout(() => {
+                this.ollamaStatus.style.display = 'none';
+            }, 5000);
+        }
     }
 
     async checkHealth() {
