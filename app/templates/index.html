@@ -80,7 +80,17 @@
 
                 <div class="setting-group">
                     <h4>🧠 SXUDO Model Connection</h4>
-                    <p><strong>Need help connecting your local SXUDO model?</strong></p>
+                    <p><strong>Connect your local SXUDO model for full AI experience!</strong></p>
+
+                    <div class="connection-info">
+                        <p><strong>Requirements:</strong></p>
+                        <ul>
+                            <li>Ollama running on your computer with <code>ollama serve</code></li>
+                            <li>Your computer's local IP address (not 127.0.0.1)</li>
+                            <li>Port 11434 accessible from this server</li>
+                        </ul>
+                    </div>
+
                     <a href="/sxudo-guide" target="_blank" class="btn-secondary" style="display: inline-block; text-decoration: none; text-align: center; margin-bottom: 15px;">
                         📖 Open Connection Guide
                     </a>
@@ -91,6 +101,10 @@
                     <input type="number" id="ollamaPort" placeholder="11434" value="11434">
                     <button id="connectOllama" class="btn-secondary">🔗 Connect to SXUDO Model</button>
                     <div id="ollamaStatus" class="status-message"></div>
+
+                    <div class="network-note">
+                        <p><small><strong>Note:</strong> This server runs on fly.dev and cannot reach local IPs like 192.168.x.x directly. You may need to use a public tunnel service like ngrok or run this app locally.</small></p>
+                    </div>
                 </div>
 
                 <button id="closeSettings" class="btn-primary">Close</button>
