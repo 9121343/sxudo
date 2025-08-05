@@ -31,12 +31,6 @@
         "history": [
             {
                 "user": "heyy",
-                "assistant": "Hello default! I'm SXUDO, but I'm running in demo mode since Ollama isn't available. You said: 'heyy'. In a full setup, I would provide an intelligent response using local AI models.",
-                "timestamp": "2025-08-05T09:58:03.568605",
-                "emotion": "\ud83d\ude0a"
-            },
-            {
-                "user": "heyy",
                 "assistant": "Hello default! I'm SXUDO, your emotionally intelligent AI assistant created by Madhur Kharade. I'm here to help you with any questions, provide support, or just have a friendly conversation. How can I assist you today?",
                 "timestamp": "2025-08-05T10:14:13.130574",
                 "emotion": "\ud83d\ude0a"
@@ -57,6 +51,12 @@
                 "user": "Which is the best country in our world?",
                 "assistant": "Hello default! I'm SXUDO, your emotionally intelligent AI assistant created by Madhur Kharade. I'm here to help you with any questions, provide support, or just have a friendly conversation. How can I assist you today?",
                 "timestamp": "2025-08-05T10:19:21.716951",
+                "emotion": "\ud83d\ude0a"
+            },
+            {
+                "user": "what is encylopedia",
+                "assistant": "Great to connect with you, default! While I'm in demo mode, my passion for helping remains at full strength. What's sparking your curiosity today?",
+                "timestamp": "2025-08-05T14:53:32.436420",
                 "emotion": "\ud83d\ude0a"
             }
         ],
