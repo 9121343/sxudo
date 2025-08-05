@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Your SXUDO Model</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .step { background: #f0f8ff; padding: 15px; margin: 10px 0; border-radius: 8px; }
+        .command { background: #1e1e1e; color: #00ff00; padding: 10px; border-radius: 5px; font-family: monospace; }
+        .highlight { color: #6d28d9; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>🧠 Connect Your Local SXUDO Model</h1>
+    
+    <div class="step">
+        <h3>📍 Current Situation</h3>
+        <p>You're running <code>ollama run sxudo</code> which is great for terminal chat, but your web app needs the Ollama API server to connect.</p>
+    </div>
+
+    <div class="step">
+        <h3>🔧 Step 1: Stop Interactive Mode</h3>
+        <p>In your terminal where <code>ollama run sxudo</code> is running, press <span class="highlight">Ctrl+C</span> to exit.</p>
+    </div>
+
+    <div class="step">
+        <h3>🚀 Step 2: Start Ollama API Server</h3>
+        <p>Run this command to start the API server that your web app can connect to:</p>
+        <div class="command">
+set OLLAMA_HOST=0.0.0.0:11434
+ollama serve
+        </div>
+    </div>
+
+    <div class="step">
+        <h3>🌐 Step 3: Find Your IP Address</h3>
+        <p>In another terminal, find your computer's IP address:</p>
+        <div class="command">ipconfig</div>
+        <p>Look for <span class="highlight">IPv4 Address</span> (e.g., 192.168.1.100)</p>
+    </div>
+
+    <div class="step">
+        <h3>⚙️ Step 4: Configure in SXUDO App</h3>
+        <ol>
+            <li>Go to your SXUDO app</li>
+            <li>Click ⚙️ <strong>Settings</strong></li>
+            <li>Scroll to <strong>"Ollama Configuration"</strong></li>
+            <li>Enter your IP address (not 127.0.0.1)</li>
+            <li>Port: <strong>11434</strong></li>
+            <li>Click <strong>"Connect to Ollama"</strong></li>
+        </ol>
+    </div>
+
+    <div class="step">
+        <h3>✅ Step 5: Test Your SXUDO Model</h3>
+        <p>Once connected, your app will automatically use your custom SXUDO model with the personality you've defined!</p>
+        <p>The status should change from "📝 Demo Mode" to "🤖 AI Mode Active"</p>
+    </div>
+
+    <div class="step">
+        <h3>🔄 Alternative: Test SXUDO Model Locally</h3>
+        <p>You can also test your model directly:</p>
+        <div class="command">
+# Test your model via API
+curl -X POST http://localhost:11434/api/chat -H "Content-Type: application/json" -d '{
+  "model": "sxudo",
+  "messages": [{"role": "user", "content": "Hello SXUDO!"}],
+  "stream": false
+}'
+        </div>
+    </div>
+
+    <p><a href="/">← Back to SXUDO App</a></p>
+</body>
+</html>
