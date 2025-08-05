@@ -86,6 +86,9 @@ class SXUDOChat {
         this.voiceSpeedSlider.addEventListener('input', () => this.updateVoiceSpeed());
         this.autoSpeakCheckbox.addEventListener('change', () => this.updateAutoSpeak());
         this.showEmotionsCheckbox.addEventListener('change', () => this.updateShowEmotions());
+
+        // Ollama configuration
+        this.connectOllama.addEventListener('click', () => this.connectToOllama());
         
         // Real-time input analysis
         this.messageInput.addEventListener('input', () => this.analyzeInputEmotion());
