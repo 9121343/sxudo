@@ -94,6 +94,30 @@ Einstein fundamentally changed how we understand the universe!"""
 
 There are actually millions of colors visible to humans - roughly 10 million different shades!"""
 
+    # Encyclopedia question
+    if any(word in message_lower for word in ["encyclopedia", "encyclopaedia", "what is encyclopedia"]):
+        return f"""Great question, {username}! An **encyclopedia** is a comprehensive reference work containing information on a wide range of subjects! 📚
+
+🔍 **What is an Encyclopedia:**
+• A collection of articles on various topics, usually arranged alphabetically
+• Designed to provide reliable, factual information
+• Can be general (covering all topics) or specialized (focusing on specific fields)
+
+📖 **Types of Encyclopedias:**
+• **Print**: Traditional books like Encyclopedia Britannica
+• **Digital**: Online versions like Wikipedia, Britannica.com
+• **Specialized**: Medical, scientific, or subject-specific encyclopedias
+
+🌟 **Famous Examples:**
+• **Wikipedia**: Free, collaborative online encyclopedia
+• **Encyclopedia Britannica**: Historic, scholarly reference work
+• **Subject-specific**: Stanford Encyclopedia of Philosophy, Encyclopedia of Life
+
+💡 **Modern Use:**
+Today, digital encyclopedias are most common - they're searchable, regularly updated, and accessible worldwide. Wikipedia alone has over 60 million articles in 300+ languages!
+
+Are you looking for information on a specific topic? I'd be happy to help you find what you need! 🚀"""
+
     # Phone recommendations
     if "phone" in message_lower and "india" in message_lower:
         return """Here are some of the best phones in India across different price ranges:
@@ -149,7 +173,7 @@ So the answer ranges from 7 basic colors to millions of distinguishable shades!"
     if "best country" in message_lower:
         return f"""That's such a thoughtful question, {username}! The concept of "best" country is beautifully subjective and depends on what matters most to you.
 
-🌍 **Different perspectives on "best":**
+�� **Different perspectives on "best":**
 • **Quality of life:** Countries like Denmark, Switzerland, Norway often rank high
 • **Innovation:** Singapore, South Korea, Israel lead in technology
 • **Natural beauty:** New Zealand, Canada, Iceland are breathtaking
