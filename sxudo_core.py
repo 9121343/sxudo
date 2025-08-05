@@ -1,5 +1,5 @@
 import ollama
-from app.memory import load_memory, save_memory
+from memory import load_memory, save_memory
 
 SESSION_ID = "default"
 
