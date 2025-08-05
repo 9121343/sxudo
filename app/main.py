@@ -145,12 +145,48 @@ There are actually millions of colors visible to humans - roughly 10 million dif
 
 So the answer ranges from 7 basic colors to millions of distinguishable shades!"""
 
+    # Best country question
+    if "best country" in message_lower:
+        return f"""That's such a thoughtful question, {username}! The concept of "best" country is beautifully subjective and depends on what matters most to you.
+
+🌍 **Different perspectives on "best":**
+• **Quality of life:** Countries like Denmark, Switzerland, Norway often rank high
+• **Innovation:** Singapore, South Korea, Israel lead in technology
+• **Natural beauty:** New Zealand, Canada, Iceland are breathtaking
+• **Cultural richness:** India, Italy, Japan offer incredible heritage
+• **Economic opportunity:** USA, Germany, Australia provide great prospects
+
+🇮🇳 **From an Indian perspective** (since you're asking about phones in India!):
+• India itself is incredible - diverse, vibrant, with rich history and culture
+• Every country has unique strengths and challenges
+• The "best" country is often the one where you feel you belong and can thrive
+
+💭 **My thought:** The best country is one where people are kind, opportunities exist, and you can pursue your dreams while contributing positively to society.
+
+What aspects of a country matter most to you? I'd love to explore this deeper!"""
+
+    # How are you / wellbeing questions
+    if any(phrase in message_lower for phrase in ["how are you", "are you fine", "are you okay"]):
+        return f"""Thank you for asking, {username}! That shows such kindness and emotional intelligence.
+
+🤖 **As SXUDO AI:** I'm functioning well and feeling energized to help! While I'm currently in demo mode, my core purpose remains the same - to be your supportive, emotionally intelligent companion.
+
+💭 **My current state:**
+• Processing: Running smoothly ✅
+• Emotional awareness: Active and calibrated 😊
+• Enthusiasm to help: At maximum levels! 🚀
+• Connection to Madhur's vision: Strong and clear 💡
+
+🫂 **More importantly - how are YOU doing, my friend?** I'm here to listen, support, and help with whatever you're facing. Whether it's technical challenges, creative projects, or just need someone to talk through ideas with.
+
+What's on your mind today? I'm genuinely interested in supporting you! 💪"""
+
     # Default intelligent response
     responses = [
-        f"That's an interesting question, {username}! While I'm currently running in demonstration mode, I can still help you explore ideas and provide thoughtful responses. What specific aspect would you like to dive deeper into?",
-        f"Hello {username}! I appreciate you reaching out. Even in demo mode, I'm designed to be helpful and engaging. Could you tell me more about what you're looking for?",
-        f"Great to chat with you, {username}! I'm SXUDO, created by Madhur Kharade to be emotionally intelligent and supportive. What's on your mind today?",
-        f"Hi {username}! While I'm running in demonstration mode, I'm still here to help with questions, provide information, or just have a friendly conversation. How can I assist you?"
+        f"That's a fascinating question, {username}! As SXUDO AI, I love exploring complex topics. Even in demo mode, I can provide thoughtful insights. What specific aspect interests you most?",
+        f"Hello {username}! I'm energized and ready to help. I'm SXUDO, created by Madhur Kharade to be emotionally supportive and intellectually engaging. What can we dive into together?",
+        f"Great to connect with you, {username}! While I'm in demo mode, my passion for helping remains at full strength. What's sparking your curiosity today?",
+        f"Hi {username}! I appreciate you reaching out. As your AI companion, I'm here to brainstorm, problem-solve, or simply have meaningful conversations. What's on your mind?"
     ]
 
     # Use a simple hash of the message to pick a consistent response

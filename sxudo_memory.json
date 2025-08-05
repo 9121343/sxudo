@@ -30,10 +30,6 @@
         "username": "default",
         "history": [
             {
-                "user": "how many colours are there?",
-                "sxudo": "*"
-            },
-            {
                 "user": "heyy",
                 "assistant": "Hello default! I'm SXUDO, but I'm running in demo mode since Ollama isn't available. You said: 'heyy'. In a full setup, I would provide an intelligent response using local AI models.",
                 "timestamp": "2025-08-05T09:58:03.568605",
@@ -55,6 +51,12 @@
                 "user": "Which is the best country in our world?",
                 "assistant": "Hello default! I'm SXUDO, your emotionally intelligent AI assistant created by Madhur Kharade. I'm here to help you with any questions, provide support, or just have a friendly conversation. How can I assist you today?",
                 "timestamp": "2025-08-05T10:15:08.312895",
+                "emotion": "\ud83d\ude0a"
+            },
+            {
+                "user": "Which is the best country in our world?",
+                "assistant": "Hello default! I'm SXUDO, your emotionally intelligent AI assistant created by Madhur Kharade. I'm here to help you with any questions, provide support, or just have a friendly conversation. How can I assist you today?",
+                "timestamp": "2025-08-05T10:19:21.716951",
                 "emotion": "\ud83d\ude0a"
             }
         ],
