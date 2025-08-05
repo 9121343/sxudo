@@ -11,7 +11,12 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.requests import Request
 from pydantic import BaseModel
-import ollama
+try:
+    import ollama
+    OLLAMA_AVAILABLE = True
+except ImportError:
+    OLLAMA_AVAILABLE = False
+    ollama = None
 
 from .memory import load_memory, save_memory
 
@@ -244,7 +249,7 @@ def detect_emotion(text: str) -> str:
         return "😠"
     elif any(word in text for word in ["worried", "nervous", "anxious", "scared", "😰", "😨"]):
         return "😰"
-    elif any(word in text for word in ["confused", "lost", "don't understand", "��"]):
+    elif any(word in text for word in ["confused", "lost", "don't understand", "😕"]):
         return "😕"
     else:
         return "😊"  # Default to neutral/friendly
