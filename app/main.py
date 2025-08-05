@@ -133,18 +133,21 @@ async def image_chat(
         image_base64 = base64.b64encode(image_content).decode('utf-8')
         
         # Use LLaVA model for image analysis
-        try:
-            response = ollama.chat(
-                model="llava",
-                messages=[{
-                    "role": "user",
-                    "content": message,
-                    "images": [image_base64]
-                }]
-            )
-            reply = response["message"]["content"]
-        except Exception as ollama_error:
-            reply = f"I'm having trouble analyzing images right now. Error: {str(ollama_error)}"
+        if OLLAMA_AVAILABLE:
+            try:
+                response = ollama.chat(
+                    model="llava",
+                    messages=[{
+                        "role": "user",
+                        "content": message,
+                        "images": [image_base64]
+                    }]
+                )
+                reply = response["message"]["content"]
+            except Exception as ollama_error:
+                reply = f"I'm having trouble analyzing images right now. Error: {str(ollama_error)}"
+        else:
+            reply = f"I received your image and the message: '{message}'. In a full setup with Ollama, I would analyze this image using the LLaVA model and provide detailed insights about what I see."
         
         # Save to memory
         memory = load_memory(username)
