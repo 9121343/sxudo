@@ -16,8 +16,9 @@ class SXUDOChat {
         this.setupSpeechRecognition();
         this.setupKeyboardShortcuts();
         
-        // Load conversation history
+        // Load conversation history and check health
         this.loadConversationHistory();
+        this.checkHealth();
     }
     
     initializeElements() {
@@ -418,7 +419,7 @@ class SXUDOChat {
         } else if (text.includes('sad') || text.includes('upset') || text.includes('disappointed')) {
             this.currentEmotion = '😢';
         } else if (text.includes('angry') || text.includes('mad') || text.includes('frustrated')) {
-            this.currentEmotion = '😠';
+            this.currentEmotion = '����';
         } else if (text.includes('worried') || text.includes('nervous') || text.includes('anxious')) {
             this.currentEmotion = '😰';
         } else if (text.includes('confused') || text.includes('lost')) {
