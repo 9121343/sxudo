@@ -44,6 +44,10 @@ class ChatResponse(BaseModel):
     username: str
     timestamp: str
 
+class OllamaConfig(BaseModel):
+    host: str
+    port: Optional[int] = 11434
+
 # Constants
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
 
@@ -96,7 +100,7 @@ There are actually millions of colors visible to humans - roughly 10 million dif
 
 📱 **Premium Segment (₹80,000+):**
 • iPhone 15 Pro/Pro Max - Excellent cameras, premium build
-• Samsung Galaxy S24 Ultra - S Pen, great cameras, large display
+�� Samsung Galaxy S24 Ultra - S Pen, great cameras, large display
 • Google Pixel 8 Pro - Best Android camera AI
 
 💎 **Mid-Premium (₹40,000-80,000):**
