@@ -41,14 +41,25 @@ ollama serve
     </div>
 
     <div class="step">
-        <h3>⚙️ Step 4: Configure in SXUDO App</h3>
+        <h3>🌐 Step 4: Network Considerations</h3>
+        <p><strong>Important:</strong> If this app is running on fly.dev (or another cloud service), it cannot directly reach your local IP address (192.168.x.x).</p>
+        <p><strong>Solutions:</strong></p>
+        <ul>
+            <li><strong>Run locally:</strong> Download and run this app on your computer</li>
+            <li><strong>Use ngrok:</strong> Create a public tunnel to your local Ollama</li>
+            <li><strong>VPN:</strong> Use a VPN that allows the server to reach your network</li>
+        </ul>
+    </div>
+
+    <div class="step">
+        <h3>⚙️ Step 5: Configure in SXUDO App</h3>
         <ol>
             <li>Go to your SXUDO app</li>
             <li>Click ⚙️ <strong>Settings</strong></li>
-            <li>Scroll to <strong>"Ollama Configuration"</strong></li>
-            <li>Enter your IP address (not 127.0.0.1)</li>
-            <li>Port: <strong>11434</strong></li>
-            <li>Click <strong>"Connect to Ollama"</strong></li>
+            <li>Scroll to <strong>"🧠 SXUDO Model Connection"</strong></li>
+            <li>Enter your IP address or ngrok URL</li>
+            <li>Port: <strong>11434</strong> (or ngrok port)</li>
+            <li>Click <strong>"🔗 Connect to SXUDO Model"</strong></li>
         </ol>
     </div>
 
