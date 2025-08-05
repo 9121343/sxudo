@@ -44,6 +44,12 @@ class SXUDOChat {
         this.voiceSpeedValue = document.getElementById('voiceSpeedValue');
         this.autoSpeakCheckbox = document.getElementById('autoSpeak');
         this.showEmotionsCheckbox = document.getElementById('showEmotions');
+
+        // Ollama configuration
+        this.ollamaHost = document.getElementById('ollamaHost');
+        this.ollamaPort = document.getElementById('ollamaPort');
+        this.connectOllama = document.getElementById('connectOllama');
+        this.ollamaStatus = document.getElementById('ollamaStatus');
         
         // Indicators
         this.loadingIndicator = document.getElementById('loadingIndicator');
