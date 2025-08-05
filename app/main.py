@@ -229,26 +229,61 @@ async def clear_memory(username: str):
 @app.get("/api/health")
 async def health_check():
     """Health check endpoint"""
+    # Try to test Ollama connection directly
+    import httpx
+
+    ollama_hosts = [
+        "http://localhost:11434",
+        "http://127.0.0.1:11434",
+        "http://0.0.0.0:11434"
+    ]
+
+    for host in ollama_hosts:
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.get(f"{host}/api/version", timeout=2.0)
+                if response.status_code == 200:
+                    # Try to get models
+                    models_response = await client.get(f"{host}/api/tags", timeout=5.0)
+                    models = []
+                    if models_response.status_code == 200:
+                        models_data = models_response.json()
+                        models = [model["name"] for model in models_data.get("models", [])]
+
+                    return JSONResponse({
+                        "status": "healthy",
+                        "ollama_available": True,
+                        "ollama_host": host,
+                        "models": models,
+                        "version": response.json() if response.status_code == 200 else "unknown"
+                    })
+        except Exception as e:
+            continue
+
+    # If Ollama Python package is available, try that
     if OLLAMA_AVAILABLE:
         try:
             models = ollama.list()
             return JSONResponse({
                 "status": "healthy",
                 "ollama_available": True,
+                "connection_method": "python_package",
                 "models": [model["name"] for model in models.get("models", [])]
             })
         except Exception as e:
             return JSONResponse({
                 "status": "degraded",
                 "ollama_available": False,
-                "error": str(e)
+                "python_package_error": str(e),
+                "suggestion": "Try running 'ollama serve' in terminal"
             })
-    else:
-        return JSONResponse({
-            "status": "demo",
-            "ollama_available": False,
-            "message": "Running in demo mode - Ollama not installed"
-        })
+
+    return JSONResponse({
+        "status": "demo",
+        "ollama_available": False,
+        "message": "Ollama not running or not accessible",
+        "suggestion": "Run 'ollama serve' to start Ollama service"
+    })
 
 def detect_emotion(text: str) -> str:
     """Simple emotion detection based on keywords"""
