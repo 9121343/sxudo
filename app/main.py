@@ -189,17 +189,57 @@ Keep responses conversational and warm."""
         messages.append({"role": "user", "content": chat_message.message})
         
         # Get response from Ollama
-        if OLLAMA_AVAILABLE:
+        ollama_response = None
+
+        # Try configured Ollama host first
+        try:
+            import httpx
+            async with httpx.AsyncClient() as client:
+                # Try the sxudo model first, then llama3
+                for model in ["sxudo:latest", "llama3:latest", "llama3"]:
+                    try:
+                        response = await client.post(
+                            f"{OLLAMA_HOST}/api/chat",
+                            json={
+                                "model": model,
+                                "messages": messages,
+                                "stream": False
+                            },
+                            timeout=30.0
+                        )
+                        if response.status_code == 200:
+                            data = response.json()
+                            reply = data.get("message", {}).get("content", "")
+                            if reply:
+                                ollama_response = True
+                                break
+                    except Exception:
+                        continue
+        except Exception:
+            pass
+
+        # Fallback to Python ollama package
+        if not ollama_response and OLLAMA_AVAILABLE:
             try:
                 response = ollama.chat(
-                    model="llama3",  # Default model, can be configured
+                    model="sxudo",  # Try custom model first
                     messages=messages
                 )
                 reply = response["message"]["content"]
-            except Exception as ollama_error:
-                reply = f"I'm sorry, I'm having trouble connecting to my AI service right now. Error: {str(ollama_error)}"
-        else:
-            # Enhanced demo mode with intelligent responses
+                ollama_response = True
+            except Exception:
+                try:
+                    response = ollama.chat(
+                        model="llama3",
+                        messages=messages
+                    )
+                    reply = response["message"]["content"]
+                    ollama_response = True
+                except Exception as ollama_error:
+                    pass
+
+        # Use enhanced demo mode if Ollama is not available
+        if not ollama_response:
             reply = generate_intelligent_demo_response(chat_message.message, chat_message.username, memory.get("history", []))
         
         # Simple emotion detection (could be enhanced with ML models)
