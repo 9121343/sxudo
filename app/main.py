@@ -181,16 +181,17 @@ async def generate_image(
     """Image generation endpoint"""
     try:
         # Use SDXL model for image generation
-        try:
-            response = ollama.generate(
-                model="sdxl",
-                prompt=prompt
-            )
-            # Note: This is a simplified implementation
-            # In practice, SDXL would return image data
-            reply = f"Generated an image with prompt: {prompt}"
-        except Exception as ollama_error:
-            reply = f"I'm having trouble generating images right now. Error: {str(ollama_error)}"
+        if OLLAMA_AVAILABLE:
+            try:
+                response = ollama.generate(
+                    model="sdxl",
+                    prompt=prompt
+                )
+                reply = f"Generated an image with prompt: {prompt}"
+            except Exception as ollama_error:
+                reply = f"I'm having trouble generating images right now. Error: {str(ollama_error)}"
+        else:
+            reply = f"I would generate an image with the prompt: '{prompt}'. In a full setup with Ollama and SDXL model, this would create an actual image based on your description."
         
         return JSONResponse({
             "reply": reply,
