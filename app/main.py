@@ -79,15 +79,18 @@ Keep responses conversational and warm."""
         messages.append({"role": "user", "content": chat_message.message})
         
         # Get response from Ollama
-        try:
-            response = ollama.chat(
-                model="llama3",  # Default model, can be configured
-                messages=messages
-            )
-            reply = response["message"]["content"]
-        except Exception as ollama_error:
-            # Fallback if Ollama is not available
-            reply = f"I'm sorry, I'm having trouble connecting to my AI service right now. Error: {str(ollama_error)}"
+        if OLLAMA_AVAILABLE:
+            try:
+                response = ollama.chat(
+                    model="llama3",  # Default model, can be configured
+                    messages=messages
+                )
+                reply = response["message"]["content"]
+            except Exception as ollama_error:
+                reply = f"I'm sorry, I'm having trouble connecting to my AI service right now. Error: {str(ollama_error)}"
+        else:
+            # Fallback response when Ollama is not available
+            reply = f"Hello {chat_message.username}! I'm SXUDO, but I'm running in demo mode since Ollama isn't available. You said: '{chat_message.message}'. In a full setup, I would provide an intelligent response using local AI models."
         
         # Simple emotion detection (could be enhanced with ML models)
         emotion = detect_emotion(chat_message.message)
