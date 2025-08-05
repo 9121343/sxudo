@@ -229,19 +229,25 @@ async def clear_memory(username: str):
 @app.get("/api/health")
 async def health_check():
     """Health check endpoint"""
-    try:
-        # Check if Ollama is available
-        models = ollama.list()
+    if OLLAMA_AVAILABLE:
+        try:
+            models = ollama.list()
+            return JSONResponse({
+                "status": "healthy",
+                "ollama_available": True,
+                "models": [model["name"] for model in models.get("models", [])]
+            })
+        except Exception as e:
+            return JSONResponse({
+                "status": "degraded",
+                "ollama_available": False,
+                "error": str(e)
+            })
+    else:
         return JSONResponse({
-            "status": "healthy",
-            "ollama_available": True,
-            "models": [model["name"] for model in models.get("models", [])]
-        })
-    except Exception as e:
-        return JSONResponse({
-            "status": "degraded",
+            "status": "demo",
             "ollama_available": False,
-            "error": str(e)
+            "message": "Running in demo mode - Ollama not installed"
         })
 
 def detect_emotion(text: str) -> str:
