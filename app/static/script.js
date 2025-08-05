@@ -495,6 +495,68 @@ class SXUDOChat {
     updateShowEmotions() {
         this.showEmotions = this.showEmotionsCheckbox.checked;
     }
+
+    async connectToOllama() {
+        const host = this.ollamaHost.value.trim();
+        const port = parseInt(this.ollamaPort.value) || 11434;
+
+        if (!host) {
+            this.showOllamaStatus('Please enter your computer\'s IP address', 'error');
+            return;
+        }
+
+        this.showOllamaStatus('Connecting...', 'info');
+        this.connectOllama.disabled = true;
+
+        try {
+            const response = await fetch('/api/configure-ollama', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    host: host,
+                    port: port
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                this.showOllamaStatus(`✅ Connected! Found models: ${data.models.join(', ')}`, 'success');
+                // Refresh health status
+                setTimeout(() => this.checkHealth(), 1000);
+            } else {
+                this.showOllamaStatus(`❌ ${data.error}`, 'error');
+            }
+        } catch (error) {
+            this.showOllamaStatus(`❌ Connection failed: ${error.message}`, 'error');
+        } finally {
+            this.connectOllama.disabled = false;
+        }
+    }
+
+    showOllamaStatus(message, type) {
+        this.ollamaStatus.textContent = message;
+        this.ollamaStatus.className = `status-message ${type}`;
+        this.ollamaStatus.style.display = 'block';
+    }
+
+    async checkHealth() {
+        try {
+            const response = await fetch('/api/health');
+            const health = await response.json();
+            console.log('Health check:', health);
+
+            if (health.ollama_available) {
+                this.updateStatus('🤖 AI Mode Active - Connected to Ollama');
+            } else {
+                this.updateStatus('📝 Demo Mode - AI not connected');
+            }
+        } catch (error) {
+            console.error('Health check failed:', error);
+        }
+    }
     
     updateStatus(message) {
         this.statusText.textContent = message;
