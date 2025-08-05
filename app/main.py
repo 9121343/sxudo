@@ -195,8 +195,8 @@ Keep responses conversational and warm."""
             except Exception as ollama_error:
                 reply = f"I'm sorry, I'm having trouble connecting to my AI service right now. Error: {str(ollama_error)}"
         else:
-            # Enhanced demo mode with smarter responses
-            reply = generate_demo_response(chat_message.message, chat_message.username, memory.get("history", []))
+            # Enhanced demo mode with intelligent responses
+            reply = generate_intelligent_demo_response(chat_message.message, chat_message.username, memory.get("history", []))
         
         # Simple emotion detection (could be enhanced with ML models)
         emotion = detect_emotion(chat_message.message)
