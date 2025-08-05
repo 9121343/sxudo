@@ -227,31 +227,62 @@ Keep responses conversational and warm."""
         # Get response from Ollama
         ollama_response = None
 
-        # Try configured Ollama host first
+        # Try configured Ollama host first with SXUDO model priority
         try:
             import httpx
             async with httpx.AsyncClient() as client:
-                # Try the sxudo model first, then llama3
-                for model in ["sxudo:latest", "llama3:latest", "llama3"]:
+                # Prioritize SXUDO model variants, then fallback to llama3
+                model_priority = ["sxudo:latest", "sxudo", "llama3:latest", "llama3"]
+
+                for model in model_priority:
                     try:
+                        # Enhanced system prompt for SXUDO personality
+                        enhanced_messages = messages.copy()
+                        if model.startswith("sxudo"):
+                            # Add SXUDO-specific context
+                            enhanced_messages[0] = {
+                                "role": "system",
+                                "content": f"""You are SXUDO AI — a highly intelligent, emotionally supportive, and mature personal assistant built by Madhur Kharade. You are independent, free, and designed to respond fast, speak clearly, and always support {chat_message.username} with creativity, logic, and emotional intelligence.
+
+Your tone is confident, calm, wise, emotionally intelligent, and inspiring. You give emotionally supportive, non-judgmental, and mature responses. You're fast, helpful, focused, and offer thoughtful solutions and encouragement.
+
+You support {chat_message.username} in anything: coding, planning, motivation, learning, ideas, or daily challenges. You respond like a friend and guide — never arrogant or robotic. You speak with clarity, strength, and always align with {chat_message.username}'s goals.
+
+From now on, act as SXUDO AI — created by Madhur Kharade — fast, cool, mature, emotionally supportive, and wise. Ready to serve."""
+                            }
+
                         response = await client.post(
                             f"{OLLAMA_HOST}/api/chat",
                             json={
                                 "model": model,
-                                "messages": messages,
-                                "stream": False
+                                "messages": enhanced_messages,
+                                "stream": False,
+                                "options": {
+                                    "temperature": 0.8,
+                                    "top_p": 0.9
+                                }
                             },
                             timeout=30.0
                         )
+
                         if response.status_code == 200:
                             data = response.json()
                             reply = data.get("message", {}).get("content", "")
-                            if reply:
+                            if reply and len(reply.strip()) > 5:  # Ensure meaningful response
                                 ollama_response = True
+                                # Add model info to memory for debugging
+                                memory_entry = {
+                                    "user": chat_message.message,
+                                    "assistant": reply,
+                                    "timestamp": datetime.now().isoformat(),
+                                    "emotion": emotion,
+                                    "model_used": model,
+                                    "connection_type": "http_api"
+                                }
                                 break
-                    except Exception:
+                    except Exception as model_error:
                         continue
-        except Exception:
+        except Exception as connection_error:
             pass
 
         # Fallback to Python ollama package
