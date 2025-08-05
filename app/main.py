@@ -198,6 +198,11 @@ async def home(request: Request):
     """Main chat interface"""
     return templates.TemplateResponse("index.html", {"request": request})
 
+@app.get("/sxudo-guide", response_class=HTMLResponse)
+async def sxudo_guide(request: Request):
+    """SXUDO model connection guide"""
+    return templates.TemplateResponse("sxudo_guide.html", {"request": request})
+
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat(chat_message: ChatMessage):
     """Main chat endpoint"""
