@@ -650,10 +650,29 @@ body {
 
 /* Image Preview */
 .image-preview {
-    max-width: 200px;
+    max-width: 300px;
+    max-height: 200px;
     border-radius: var(--border-radius-sm);
     margin: 10px 0;
     box-shadow: var(--shadow);
+    object-fit: cover;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.image-preview:hover {
+    transform: scale(1.02);
+    box-shadow: var(--shadow-lg);
+}
+
+.image-info {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    margin-bottom: 8px;
+}
+
+.image-info strong {
+    font-weight: 600;
 }
 
 /* Error States */
