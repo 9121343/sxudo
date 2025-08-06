@@ -278,26 +278,40 @@ class SXUDOChat {
         
         const message = this.messageInput.value.trim() || 'Please analyze this image';
         
-        // Show image preview
+        // Show image preview with enhanced styling
         const imagePreview = document.createElement('img');
         imagePreview.src = URL.createObjectURL(file);
         imagePreview.className = 'image-preview';
-        
+        imagePreview.style.maxWidth = '300px';
+        imagePreview.style.maxHeight = '200px';
+        imagePreview.style.borderRadius = '8px';
+        imagePreview.style.marginBottom = '10px';
+
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message user';
-        
+
         const avatar = document.createElement('div');
         avatar.className = 'avatar';
         avatar.textContent = '👤';
-        
+
         const messageContent = document.createElement('div');
         messageContent.className = 'message-content';
+
+        // Add image info
+        const imageInfo = document.createElement('div');
+        imageInfo.className = 'image-info';
+        imageInfo.innerHTML = `<small>📸 <strong>${file.name}</strong> (${(file.size / 1024).toFixed(1)}KB)</small>`;
+        imageInfo.style.marginBottom = '8px';
+        imageInfo.style.color = 'rgba(255, 255, 255, 0.8)';
+        messageContent.appendChild(imageInfo);
+
         messageContent.appendChild(imagePreview);
-        
+
         const messageText = document.createElement('p');
         messageText.textContent = message;
+        messageText.style.marginTop = '10px';
         messageContent.appendChild(messageText);
-        
+
         messageDiv.appendChild(avatar);
         messageDiv.appendChild(messageContent);
         this.chatMessages.appendChild(messageDiv);
