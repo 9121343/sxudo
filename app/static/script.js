@@ -318,7 +318,14 @@ class SXUDOChat {
         
         this.messageInput.value = '';
         this.showLoading(true);
-        this.updateStatus('Analyzing image...');
+
+        // Check if we're in demo mode
+        const currentStatus = this.statusText.textContent;
+        if (currentStatus.includes('Demo Mode')) {
+            this.updateStatus('📸 Processing image in demo mode...');
+        } else {
+            this.updateStatus('🔍 AI analyzing your image...');
+        }
         
         try {
             const formData = new FormData();
