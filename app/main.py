@@ -415,7 +415,26 @@ async def image_chat(
             except Exception as ollama_error:
                 reply = f"I'm having trouble analyzing images right now. Error: {str(ollama_error)}"
         else:
-            reply = f"I received your image and the message: '{message}'. In a full setup with Ollama, I would analyze this image using the LLaVA model and provide detailed insights about what I see."
+            reply = f"""📸 **Image received successfully!** I can see you've uploaded an image with the message: "{message}"
+
+🤖 **Demo Mode Analysis:**
+While I'm currently running in demo mode, here's what I would normally do with your image:
+
+🔍 **Full AI Analysis (with Ollama + LLaVA):**
+• **Detailed description** of everything visible in the image
+• **Object recognition** - people, animals, objects, text, etc.
+• **Scene understanding** - location, context, activities
+• **Color and composition analysis**
+• **Text extraction** if any text is present
+• **Emotional context** of the image
+• **Answer specific questions** about the image content
+
+💡 **To enable full image analysis:**
+1. Connect your local Ollama with LLaVA model
+2. Use the Settings → SXUDO Model Connection
+3. Or run this app locally for full functionality
+
+**What did you want to know about this image?** I'd love to help once connected to the full AI system! 🚀"""
         
         # Save to memory
         memory = load_memory(username)
