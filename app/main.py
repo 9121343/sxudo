@@ -189,6 +189,28 @@ So the answer ranges from 7 basic colors to millions of distinguishable shades!"
 
 What aspects of a country matter most to you? I'd love to explore this deeper!"""
 
+    # Emotional support / relationship issues
+    if any(phrase in message_lower for phrase in ["girlfriend", "boyfriend", "breakup", "broke up", "relationship", "heartbreak", "dumped", "ex-"]):
+        return f"""I'm really sorry to hear you're going through this, {username}. Breakups are genuinely tough, and what you're feeling right now is completely valid. 💙
+
+🫂 **You're not alone:** Even though I'm in demo mode, I want you to know that heartbreak is one of the most universal human experiences. You're stronger than you know.
+
+💭 **Some thoughts that might help:**
+• **Allow yourself to feel** - Grief, anger, sadness are all normal and necessary
+• **This pain is temporary** - Even though it doesn't feel like it right now
+• **You deserve love and respect** - Sometimes relationships end because they weren't the right fit
+• **Focus on self-care** - Sleep, eat well, stay connected with friends and family
+
+🌱 **Growth opportunity:** This experience, while painful, often leads to personal growth and clarity about what you truly want in relationships.
+
+🎯 **Immediate steps:**
+• Talk to trusted friends or family
+• Engage in activities that bring you joy
+• Consider journaling your thoughts
+• Be patient with the healing process
+
+I'm here to listen and support you through this difficult time. How are you feeling right now? 💪❤️"""
+
     # How are you / wellbeing questions
     if any(phrase in message_lower for phrase in ["how are you", "are you fine", "are you okay"]):
         return f"""Thank you for asking, {username}! That shows such kindness and emotional intelligence.

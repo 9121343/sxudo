@@ -30,24 +30,6 @@
         "username": "default",
         "history": [
             {
-                "user": "heyy",
-                "assistant": "Hello default! I'm SXUDO, your emotionally intelligent AI assistant created by Madhur Kharade. I'm here to help you with any questions, provide support, or just have a friendly conversation. How can I assist you today?",
-                "timestamp": "2025-08-05T10:14:13.130574",
-                "emotion": "\ud83d\ude0a"
-            },
-            {
-                "user": "How are you, my friend? Are you fine?",
-                "assistant": "Hello default! I appreciate you reaching out. Even in demo mode, I'm designed to be helpful and engaging. Could you tell me more about what you're looking for?",
-                "timestamp": "2025-08-05T10:14:40.523316",
-                "emotion": "\ud83d\ude0a"
-            },
-            {
-                "user": "Which is the best country in our world?",
-                "assistant": "Hello default! I'm SXUDO, your emotionally intelligent AI assistant created by Madhur Kharade. I'm here to help you with any questions, provide support, or just have a friendly conversation. How can I assist you today?",
-                "timestamp": "2025-08-05T10:15:08.312895",
-                "emotion": "\ud83d\ude0a"
-            },
-            {
                 "user": "Which is the best country in our world?",
                 "assistant": "Hello default! I'm SXUDO, your emotionally intelligent AI assistant created by Madhur Kharade. I'm here to help you with any questions, provide support, or just have a friendly conversation. How can I assist you today?",
                 "timestamp": "2025-08-05T10:19:21.716951",
@@ -57,6 +39,24 @@
                 "user": "what is encylopedia",
                 "assistant": "Great to connect with you, default! While I'm in demo mode, my passion for helping remains at full strength. What's sparking your curiosity today?",
                 "timestamp": "2025-08-05T14:53:32.436420",
+                "emotion": "\ud83d\ude0a"
+            },
+            {
+                "user": "heyy",
+                "assistant": "Hello default! I'm SXUDO, your emotionally intelligent AI assistant created by Madhur Kharade. I'm here to help you with any questions, provide support, or just have a friendly conversation. How can I assist you today?",
+                "timestamp": "2025-08-06T16:44:40.695311",
+                "emotion": "\ud83d\ude0a"
+            },
+            {
+                "user": "how are you?",
+                "assistant": "Thank you for asking, default! That shows such kindness and emotional intelligence.\n\n\ud83e\udd16 **As SXUDO AI:** I'm functioning well and feeling energized to help! While I'm currently in demo mode, my core purpose remains the same - to be your supportive, emotionally intelligent companion.\n\n\ud83d\udcad **My current state:**\n\u2022 Processing: Running smoothly \u2705\n\u2022 Emotional awareness: Active and calibrated \ud83d\ude0a\n\u2022 Enthusiasm to help: At maximum levels! \ud83d\ude80\n\u2022 Connection to Madhur's vision: Strong and clear \ud83d\udca1\n\n\ud83e\udec2 **More importantly - how are YOU doing, my friend?** I'm here to listen, support, and help with whatever you're facing. Whether it's technical challenges, creative projects, or just need someone to talk through ideas with.\n\nWhat's on your mind today? I'm genuinely interested in supporting you! \ud83d\udcaa",
+                "timestamp": "2025-08-06T16:44:44.193224",
+                "emotion": "\ud83d\ude0a"
+            },
+            {
+                "user": "my girlfriend brokeup with me",
+                "assistant": "Hello default! I'm energized and ready to help. I'm SXUDO, created by Madhur Kharade to be emotionally supportive and intellectually engaging. What can we dive into together?",
+                "timestamp": "2025-08-06T16:45:04.502084",
                 "emotion": "\ud83d\ude0a"
             }
         ],
