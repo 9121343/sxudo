@@ -74,6 +74,19 @@ class SXUDOChat {
         this.settingsBtn.addEventListener('click', () => this.openSettings());
         this.closeModal.addEventListener('click', () => this.closeSettings());
         this.resetBtn.addEventListener('click', () => this.resetAllData());
+
+        // Image and voice functionality
+        this.imageBtn.addEventListener('click', () => this.uploadImage());
+        this.voiceBtn.addEventListener('click', () => this.toggleVoiceRecording());
+
+        // Create hidden file input for images
+        this.imageInput = document.createElement('input');
+        this.imageInput.type = 'file';
+        this.imageInput.accept = 'image/*';
+        this.imageInput.style.display = 'none';
+        document.body.appendChild(this.imageInput);
+
+        this.imageInput.addEventListener('change', (e) => this.handleImageUpload(e));
         
         // Settings changes
         this.personalitySetting.addEventListener('change', (e) => {
