@@ -524,24 +524,23 @@ class SXUDOChat {
                 })
             });
             
+            let data;
+            const responseText = await response.text();
+
+            try {
+                data = JSON.parse(responseText);
+            } catch (error) {
+                data = { error: `Invalid response: ${responseText}` };
+            }
+
             if (!response.ok) {
-                const errorText = await response.text();
-                let errorData;
-                try {
-                    errorData = JSON.parse(errorText);
-                } catch {
-                    errorData = { error: `HTTP ${response.status}: ${errorText}` };
-                }
-                
                 if (response.status === 400) {
-                    this.showOllamaStatus(`❌ ${errorData.error}\n💡 ${errorData.suggestion || 'Make sure Ollama is running and accessible'}`, 'error');
+                    this.showOllamaStatus(`❌ ${data.error}\n💡 ${data.suggestion || 'Make sure Ollama is running and accessible'}`, 'error');
                 } else {
-                    this.showOllamaStatus(`❌ Connection failed: ${errorData.error}`, 'error');
+                    this.showOllamaStatus(`❌ Connection failed: ${data.error || `HTTP ${response.status}`}`, 'error');
                 }
                 return;
             }
-            
-            const data = await response.json();
             
             if (data.success) {
                 this.showOllamaStatus(`✅ Connected! Found models: ${data.models.join(', ')}`, 'success');
