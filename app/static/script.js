@@ -536,20 +536,22 @@ class SXUDOChat {
             }
 
             let data;
+            let responseText;
+
             try {
-                // Clone the response to avoid body stream issues
-                const responseClone = response.clone();
-                const responseText = await responseClone.text();
-                data = JSON.parse(responseText);
-            } catch (parseError) {
-                console.error('Response parsing error:', parseError);
-                // Fallback: try to read as text directly
+                responseText = await response.text();
+            } catch (textError) {
+                console.error('Failed to read response text:', textError);
+                data = { error: `Failed to read response: ${textError.message}` };
+                responseText = null;
+            }
+
+            if (responseText !== null) {
                 try {
-                    const fallbackText = await response.text();
-                    data = { error: `Invalid JSON response: ${fallbackText}` };
-                } catch (textError) {
-                    console.error('Text reading error:', textError);
-                    data = { error: `Response reading failed: ${parseError.message}` };
+                    data = JSON.parse(responseText);
+                } catch (parseError) {
+                    console.error('JSON parsing error:', parseError);
+                    data = { error: `Invalid JSON response: ${responseText.substring(0, 200)}...` };
                 }
             }
 
