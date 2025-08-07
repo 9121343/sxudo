@@ -393,8 +393,8 @@ class SXUDOChat {
             // Show typing indicator
             this.showTyping();
 
-            // Send to AI for analysis
-            const response = await fetch('/api/image-chat', {
+            // Send to AI for analysis using XMLHttpRequest to avoid body stream issues
+            const result = await this.makeRequest('/api/image-chat', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -405,16 +405,15 @@ class SXUDOChat {
                     username: this.username,
                     personality: this.personality,
                     mood: this.mood
-                })
+                }),
+                timeout: 30000
             });
-
-            const data = await response.json();
 
             // Hide typing indicator
             this.hideTyping();
 
-            if (data.reply) {
-                this.addMessage('ai', data.reply, data.emotion || '🔍');
+            if (result.success && result.data.reply) {
+                this.addMessage('ai', result.data.reply, result.data.emotion || '🔍');
             } else {
                 this.addMessage('ai', 'Sorry, I had trouble analyzing that image. Please try again.', '😕');
             }
