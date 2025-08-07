@@ -537,28 +537,39 @@ class SXUDOChat {
 
             clearTimeout(timeoutId);
 
-            // Check if response body exists and is readable
-            if (!response.body) {
-                throw new Error('No response body received');
-            }
+            console.log('Response received:', {
+                status: response.status,
+                statusText: response.statusText,
+                headers: Object.fromEntries(response.headers.entries()),
+                bodyUsed: response.bodyUsed
+            });
 
-            let data;
-            let responseText;
+            // Check if response body is already used
+            if (response.bodyUsed) {
+                console.error('Response body already consumed before reading');
+                data = { error: 'Response body already consumed - possible network issue' };
+            } else {
+                let data;
+                let responseText;
 
-            try {
-                responseText = await response.text();
-            } catch (textError) {
-                console.error('Failed to read response text:', textError);
-                data = { error: `Failed to read response: ${textError.message}` };
-                responseText = null;
-            }
-
-            if (responseText !== null) {
                 try {
-                    data = JSON.parse(responseText);
-                } catch (parseError) {
-                    console.error('JSON parsing error:', parseError);
-                    data = { error: `Invalid JSON response: ${responseText.substring(0, 200)}...` };
+                    responseText = await response.text();
+                    console.log('Response text length:', responseText.length);
+                } catch (textError) {
+                    console.error('Failed to read response text:', textError);
+                    data = { error: `Failed to read response: ${textError.message}` };
+                    responseText = null;
+                }
+
+                if (responseText !== null) {
+                    try {
+                        data = JSON.parse(responseText);
+                        console.log('Parsed JSON data:', data);
+                    } catch (parseError) {
+                        console.error('JSON parsing error:', parseError);
+                        console.log('Raw response:', responseText.substring(0, 500));
+                        data = { error: `Invalid JSON response: ${responseText.substring(0, 200)}...` };
+                    }
                 }
             }
 
