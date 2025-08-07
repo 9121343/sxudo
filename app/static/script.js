@@ -4,6 +4,9 @@ class SXUDOChat {
         this.personality = localStorage.getItem('sxudo_personality') || 'supportive';
         this.mood = localStorage.getItem('sxudo_mood') || 'neutral';
         this.isTyping = false;
+        this.isRecording = false;
+        this.recognition = null;
+        this.voiceIndicator = null;
         this.currentTheme = localStorage.getItem('sxudo_theme') || 'dark';
         
         this.initializeElements();
