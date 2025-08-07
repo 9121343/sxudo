@@ -538,33 +538,53 @@ class SXUDOChat {
 
             clearTimeout(timeoutId);
 
-            // Immediately clone the response before anything else can consume it
-            const responseClone = response.clone();
-
             console.log('Response received:', {
                 status: response.status,
                 statusText: response.statusText,
-                headers: Object.fromEntries(response.headers.entries()),
+                ok: response.ok,
                 bodyUsed: response.bodyUsed
             });
 
             let data;
 
+            // Use a more robust approach that doesn't depend on response.clone()
             try {
-                const responseText = await responseClone.text();
-                console.log('Response text length:', responseText.length);
+                // Try to get the response as an array buffer first, then convert to text
+                let responseText;
 
-                try {
-                    data = JSON.parse(responseText);
-                    console.log('Parsed JSON data:', data);
-                } catch (parseError) {
-                    console.error('JSON parsing error:', parseError);
-                    console.log('Raw response:', responseText.substring(0, 500));
-                    data = { error: `Invalid JSON response: ${responseText.substring(0, 200)}...` };
+                if (response.bodyUsed) {
+                    // If body is already used, we can't read it - create an error response
+                    console.error('Response body was already consumed');
+                    data = { error: 'Response body already consumed by another process' };
+                } else {
+                    try {
+                        // Use arrayBuffer() as it's more reliable than text() in some cases
+                        const buffer = await response.arrayBuffer();
+                        responseText = new TextDecoder().decode(buffer);
+                        console.log('Response text length:', responseText.length);
+                    } catch (bufferError) {
+                        console.error('Failed to read as buffer, trying text():', bufferError);
+                        try {
+                            responseText = await response.text();
+                        } catch (textError) {
+                            console.error('Failed to read as text too:', textError);
+                            throw new Error(`Cannot read response: ${textError.message}`);
+                        }
+                    }
+
+                    // Parse the response text as JSON
+                    try {
+                        data = JSON.parse(responseText);
+                        console.log('Parsed JSON data:', data);
+                    } catch (parseError) {
+                        console.error('JSON parsing error:', parseError);
+                        console.log('Raw response:', responseText.substring(0, 500));
+                        data = { error: `Invalid JSON response: ${responseText.substring(0, 200)}...` };
+                    }
                 }
-            } catch (textError) {
-                console.error('Failed to read response text:', textError);
-                data = { error: `Failed to read response: ${textError.message}` };
+            } catch (error) {
+                console.error('Complete response reading failure:', error);
+                data = { error: `Failed to read response: ${error.message}` };
             }
 
             if (!response.ok) {
