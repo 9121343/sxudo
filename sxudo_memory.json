@@ -30,33 +30,21 @@
         "username": "default",
         "history": [
             {
-                "user": "what is encylopedia",
-                "assistant": "Great to connect with you, default! While I'm in demo mode, my passion for helping remains at full strength. What's sparking your curiosity today?",
-                "timestamp": "2025-08-05T14:53:32.436420",
-                "emotion": "\ud83d\ude0a"
-            },
-            {
-                "user": "heyy",
+                "user": "hi",
                 "assistant": "Hello default! I'm SXUDO, your emotionally intelligent AI assistant created by Madhur Kharade. I'm here to help you with any questions, provide support, or just have a friendly conversation. How can I assist you today?",
-                "timestamp": "2025-08-06T16:44:40.695311",
+                "timestamp": "2025-08-07T14:08:31.185528",
                 "emotion": "\ud83d\ude0a"
             },
             {
-                "user": "how are you?",
-                "assistant": "Thank you for asking, default! That shows such kindness and emotional intelligence.\n\n\ud83e\udd16 **As SXUDO AI:** I'm functioning well and feeling energized to help! While I'm currently in demo mode, my core purpose remains the same - to be your supportive, emotionally intelligent companion.\n\n\ud83d\udcad **My current state:**\n\u2022 Processing: Running smoothly \u2705\n\u2022 Emotional awareness: Active and calibrated \ud83d\ude0a\n\u2022 Enthusiasm to help: At maximum levels! \ud83d\ude80\n\u2022 Connection to Madhur's vision: Strong and clear \ud83d\udca1\n\n\ud83e\udec2 **More importantly - how are YOU doing, my friend?** I'm here to listen, support, and help with whatever you're facing. Whether it's technical challenges, creative projects, or just need someone to talk through ideas with.\n\nWhat's on your mind today? I'm genuinely interested in supporting you! \ud83d\udcaa",
-                "timestamp": "2025-08-06T16:44:44.193224",
-                "emotion": "\ud83d\ude0a"
-            },
-            {
-                "user": "my girlfriend brokeup with me",
-                "assistant": "Hello default! I'm energized and ready to help. I'm SXUDO, created by Madhur Kharade to be emotionally supportive and intellectually engaging. What can we dive into together?",
-                "timestamp": "2025-08-06T16:45:04.502084",
+                "user": "how is s22 galaxy?",
+                "assistant": "Great to connect with you, default! While I'm in demo mode, my passion for helping remains at full strength. What's sparking your curiosity today?",
+                "timestamp": "2025-08-07T14:08:39.680758",
                 "emotion": "\ud83d\ude0a"
             },
             {
                 "user": "[Image] Please analyze this image",
                 "assistant": "\ud83d\udcf8 **Image received successfully!** I can see you've uploaded an image with the message: \"Please analyze this image\"\n\n\ud83e\udd16 **Demo Mode Analysis:**\nWhile I'm currently running in demo mode, here's what I would normally do with your image:\n\n\ud83d\udd0d **Full AI Analysis (with Ollama + LLaVA):**\n\u2022 **Detailed description** of everything visible in the image\n\u2022 **Object recognition** - people, animals, objects, text, etc.\n\u2022 **Scene understanding** - location, context, activities\n\u2022 **Color and composition analysis**\n\u2022 **Text extraction** if any text is present\n\u2022 **Emotional context** of the image\n\u2022 **Answer specific questions** about the image content\n\n\ud83d\udca1 **To enable full image analysis:**\n1. Connect your local Ollama with LLaVA model\n2. Use the Settings \u2192 SXUDO Model Connection\n3. Or run this app locally for full functionality\n\n**What did you want to know about this image?** I'd love to help once connected to the full AI system! \ud83d\ude80",
-                "timestamp": "2025-08-06T16:47:25.928180",
+                "timestamp": "2025-08-07T14:09:55.272329",
                 "has_image": true
             }
         ],
