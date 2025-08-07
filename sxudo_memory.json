@@ -35,12 +35,6 @@
         "username": "Madhur_Kharade",
         "history": [
             {
-                "user": "Heyyy",
-                "assistant": "Hello Madhur_Kharade! I'm SXUDO, your emotionally intelligent AI assistant created by Madhur Kharade. I'm here to help you with any questions, provide support, or just have a friendly conversation. How can I assist you today?",
-                "timestamp": "2025-08-07T14:33:00.891025",
-                "emotion": "\ud83d\ude0a"
-            },
-            {
                 "user": "how many km is sun far?",
                 "assistant": "Great to connect with you, Madhur_Kharade! While I'm in demo mode, my passion for helping remains at full strength. What's sparking your curiosity today?",
                 "timestamp": "2025-08-07T14:33:17.363100",
@@ -56,6 +50,18 @@
                 "user": "yes",
                 "assistant": "Great to connect with you, Madhur_Kharade! While I'm in demo mode, my passion for helping remains at full strength. What's sparking your curiosity today?",
                 "timestamp": "2025-08-07T14:37:32.032600",
+                "emotion": "\ud83d\ude0a"
+            },
+            {
+                "user": "how is laptop",
+                "assistant": "Great to connect with you, Madhur_Kharade! While I'm in demo mode, my passion for helping remains at full strength. What's sparking your curiosity today?",
+                "timestamp": "2025-08-07T14:43:52.102003",
+                "emotion": "\ud83d\ude0a"
+            },
+            {
+                "user": "how is laptop?",
+                "assistant": "That's a fascinating question, Madhur_Kharade! As SXUDO AI, I love exploring complex topics. Even in demo mode, I can provide thoughtful insights. What specific aspect interests you most?",
+                "timestamp": "2025-08-07T14:45:00.766287",
                 "emotion": "\ud83d\ude0a"
             }
         ],
