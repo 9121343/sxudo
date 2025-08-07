@@ -571,7 +571,9 @@ class SXUDOChat {
             }
         } catch (error) {
             console.error('Connection error:', error);
-            if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+            if (error.name === 'AbortError') {
+                this.showOllamaStatus(`❌ Connection timeout: Request took too long\n💡 Check if ${host}:${port} is reachable`, 'error');
+            } else if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
                 this.showOllamaStatus(`❌ Network error: Cannot reach ${host}:${port}\n💡 Check if the IP address is correct and Ollama is running`, 'error');
             } else {
                 this.showOllamaStatus(`❌ Connection failed: ${error.message}`, 'error');
