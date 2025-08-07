@@ -40,6 +40,13 @@ class ChatMessage(BaseModel):
     mood: Optional[str] = "neutral"
     emotion: Optional[str] = None
 
+class ImageChatMessage(BaseModel):
+    image: str  # Base64 encoded image
+    message: str
+    username: Optional[str] = "default"
+    personality: Optional[str] = "supportive"
+    mood: Optional[str] = "neutral"
+
 class ChatResponse(BaseModel):
     reply: str
     emotion: str
@@ -193,7 +200,7 @@ Are you looking for information on a specific topic? I'd be happy to help you fi
 🎨 **Human Vision:**
 • Humans can distinguish approximately **10 million different colors**
 • We have 3 types of color receptors (red, green, blue cones)
-��� This gives us "trichromatic" color vision
+• This gives us "trichromatic" color vision
 
 🌈 **Visible Spectrum:**
 • Contains infinite gradations between wavelengths (~380-750 nanometers)
