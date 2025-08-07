@@ -588,6 +588,7 @@ class SXUDOChat {
                 this.showOllamaStatus(`❌ Connection failed: ${error.message}`, 'error');
             }
         } finally {
+            this.isConnecting = false;
             this.connectOllama.disabled = false;
         }
     }
