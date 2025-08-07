@@ -59,6 +59,10 @@ NGROK_URLS = [
     "https://ed27362dcab9.ngrok-free.app",  # Previous ngrok URL
 ]
 
+# Force connect to ngrok on startup
+OLLAMA_HOST = "https://9940cb96c0a3.ngrok-free.app"
+print(f"🔗 Forcing connection to: {OLLAMA_HOST}")
+
 async def auto_configure_ollama():
     """Automatically try to connect to available Ollama instances"""
     global OLLAMA_HOST
@@ -189,7 +193,7 @@ Are you looking for information on a specific topic? I'd be happy to help you fi
 🎨 **Human Vision:**
 • Humans can distinguish approximately **10 million different colors**
 • We have 3 types of color receptors (red, green, blue cones)
-• This gives us "trichromatic" color vision
+��� This gives us "trichromatic" color vision
 
 🌈 **Visible Spectrum:**
 • Contains infinite gradations between wavelengths (~380-750 nanometers)
