@@ -82,9 +82,11 @@ async def test_ollama_connection(host_url):
         import httpx
         headers = {"ngrok-skip-browser-warning": "true"} if "ngrok" in host_url else {}
         async with httpx.AsyncClient() as client:
-            response = await client.get(f"{host_url}/api/version", timeout=5.0, headers=headers)
+            response = await client.get(f"{host_url}/api/version", timeout=10.0, headers=headers)
+            print(f"Testing connection to {host_url}: Status {response.status_code}")
             return response.status_code == 200
-    except:
+    except Exception as e:
+        print(f"Connection test failed for {host_url}: {e}")
         return False
 
 def generate_intelligent_demo_response(message: str, username: str, history: list) -> str:
@@ -245,7 +247,7 @@ What aspects of a country matter most to you? I'd love to explore this deeper!""
 • Consider journaling your thoughts
 • Be patient with the healing process
 
-I'm here to listen and support you through this difficult time. How are you feeling right now? 💪❤️"""
+I'm here to listen and support you through this difficult time. How are you feeling right now? 💪❤���"""
 
     # How are you / wellbeing questions
     if any(phrase in message_lower for phrase in ["how are you", "are you fine", "are you okay"]):
@@ -481,7 +483,7 @@ While I'm currently running in demo mode, here's what I would normally do with y
 • **Scene understanding** - location, context, activities
 • **Color and composition analysis**
 • **Text extraction** if any text is present
-• **Emotional context** of the image
+�� **Emotional context** of the image
 • **Answer specific questions** about the image content
 
 💡 **To enable full image analysis:**
@@ -687,7 +689,7 @@ def detect_emotion(text: str) -> str:
     elif any(word in text for word in ["worried", "nervous", "anxious", "scared", "😰", "😨"]):
         return "😰"
     elif any(word in text for word in ["confused", "lost", "don't understand", "😕"]):
-        return "😕"
+        return "���"
     else:
         return "😊"  # Default to neutral/friendly
 
