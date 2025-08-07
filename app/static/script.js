@@ -544,12 +544,13 @@ class SXUDOChat {
                 bodyUsed: response.bodyUsed
             });
 
+            let data;
+
             // Check if response body is already used
             if (response.bodyUsed) {
                 console.error('Response body already consumed before reading');
                 data = { error: 'Response body already consumed - possible network issue' };
             } else {
-                let data;
                 let responseText;
 
                 try {
