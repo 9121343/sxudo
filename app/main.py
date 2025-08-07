@@ -287,20 +287,39 @@ async def sxudo_guide(request: Request):
 
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat(chat_message: ChatMessage):
-    """Main chat endpoint"""
+    """Main chat endpoint with auto-configuration"""
     try:
+        # Auto-configure Ollama connection
+        await auto_configure_ollama()
+
         # Load user memory
         memory = load_memory(chat_message.username)
-        
+
         # Build conversation history for Ollama
         messages = []
-        
-        # Add system prompt for emotional intelligence
-        system_prompt = """You are SXUDO, an emotionally intelligent AI assistant. 
-You should be supportive, understanding, and respond to the emotional context of conversations.
-Be friendly, helpful, and show empathy. Remember the conversation history and user's name.
-Keep responses conversational and warm."""
-        
+
+        # Enhanced system prompt based on personality and mood
+        personality_prompts = {
+            "supportive": f"You are SXUDO, a deeply empathetic and supportive AI companion for {chat_message.username}. Provide emotional support, active listening, and encouraging responses. Be warm, understanding, and genuinely caring.",
+            "analytical": f"You are SXUDO, an analytical and logical AI assistant for {chat_message.username}. Break down complex problems, provide structured thinking, and offer data-driven insights. Be thorough and methodical.",
+            "creative": f"You are SXUDO, a creative and imaginative AI partner for {chat_message.username}. Inspire creativity, suggest innovative ideas, and think outside the box. Be artistic and visionary.",
+            "humorous": f"You are SXUDO, a witty and fun AI companion for {chat_message.username}. Use appropriate humor, keep things light when suitable, but know when to be serious. Be entertaining and engaging."
+        }
+
+        mood_context = {
+            "happy": "The user is feeling happy and positive today.",
+            "sad": "The user is feeling sad and may need extra support and encouragement.",
+            "stressed": "The user is feeling stressed and may need calming advice and practical solutions.",
+            "excited": "The user is feeling excited and energetic today.",
+            "neutral": "The user is in a neutral mood."
+        }
+
+        system_prompt = f"""{personality_prompts.get(chat_message.personality, personality_prompts['supportive'])}
+
+Current context: {mood_context.get(chat_message.mood, mood_context['neutral'])}
+
+Always remember the user's name is {chat_message.username}. Be conversational, warm, and helpful. Respond with emotional intelligence and adapt to the conversation context."""
+
         messages.append({"role": "system", "content": system_prompt})
         
         # Add conversation history
