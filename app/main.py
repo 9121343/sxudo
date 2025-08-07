@@ -247,7 +247,7 @@ What aspects of a country matter most to you? I'd love to explore this deeper!""
 • Consider journaling your thoughts
 • Be patient with the healing process
 
-I'm here to listen and support you through this difficult time. How are you feeling right now? 💪❤���"""
+I'm here to listen and support you through this difficult time. How are you feeling right now? 💪❤️"""
 
     # How are you / wellbeing questions
     if any(phrase in message_lower for phrase in ["how are you", "are you fine", "are you okay"]):
@@ -359,6 +359,9 @@ You support {chat_message.username} in anything: coding, planning, motivation, l
 From now on, act as SXUDO AI — created by Madhur Kharade — fast, cool, mature, emotionally supportive, and wise. Ready to serve."""
                             }
 
+                        # Add ngrok headers if needed
+                        headers = {"ngrok-skip-browser-warning": "true"} if "ngrok" in OLLAMA_HOST else {}
+
                         response = await client.post(
                             f"{OLLAMA_HOST}/api/chat",
                             json={
@@ -370,6 +373,7 @@ From now on, act as SXUDO AI — created by Madhur Kharade — fast, cool, matur
                                     "top_p": 0.9
                                 }
                             },
+                            headers=headers,
                             timeout=30.0
                         )
 
@@ -483,7 +487,7 @@ While I'm currently running in demo mode, here's what I would normally do with y
 • **Scene understanding** - location, context, activities
 • **Color and composition analysis**
 • **Text extraction** if any text is present
-�� **Emotional context** of the image
+• **Emotional context** of the image
 • **Answer specific questions** about the image content
 
 💡 **To enable full image analysis:**
@@ -689,7 +693,7 @@ def detect_emotion(text: str) -> str:
     elif any(word in text for word in ["worried", "nervous", "anxious", "scared", "😰", "😨"]):
         return "😰"
     elif any(word in text for word in ["confused", "lost", "don't understand", "😕"]):
-        return "���"
+        return "😕"
     else:
         return "😊"  # Default to neutral/friendly
 
