@@ -36,6 +36,8 @@ templates = Jinja2Templates(directory="app/templates")
 class ChatMessage(BaseModel):
     message: str
     username: Optional[str] = "default"
+    personality: Optional[str] = "supportive"
+    mood: Optional[str] = "neutral"
     emotion: Optional[str] = None
 
 class ChatResponse(BaseModel):
@@ -194,7 +196,7 @@ Are you looking for information on a specific topic? I'd be happy to help you fi
 💻 **Digital Colors:**
 • RGB: 16.7 million possible combinations (256³)
 • Pantone system: ~2,000+ standardized colors
-• Web colors: 140 named colors in CSS
+�� Web colors: 140 named colors in CSS
 
 🔬 **Beyond Human Vision:**
 • UV and infrared light contain "colors" we can't see
@@ -237,7 +239,7 @@ What aspects of a country matter most to you? I'd love to explore this deeper!""
 
 🌱 **Growth opportunity:** This experience, while painful, often leads to personal growth and clarity about what you truly want in relationships.
 
-🎯 **Immediate steps:**
+���� **Immediate steps:**
 • Talk to trusted friends or family
 • Engage in activities that bring you joy
 • Consider journaling your thoughts
