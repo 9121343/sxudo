@@ -539,7 +539,7 @@ async def configure_ollama(config: OllamaConfig):
                 os.environ["OLLAMA_HOST"] = test_host
 
                 # Try to get models
-                models_response = await client.get(f"{test_host}/api/tags", timeout=5.0)
+                models_response = await client.get(f"{test_host}/api/tags", timeout=10.0, headers=headers)
                 models = []
                 if models_response.status_code == 200:
                     models_data = models_response.json()
