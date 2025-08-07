@@ -549,6 +549,54 @@ class SXUDOChat {
             this.voiceIndicator = null;
         }
     }
+
+    // Helper method using XMLHttpRequest to avoid fetch response body issues
+    makeRequest(url, options) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open(options.method || 'GET', url);
+
+            // Set headers
+            if (options.headers) {
+                Object.keys(options.headers).forEach(key => {
+                    xhr.setRequestHeader(key, options.headers[key]);
+                });
+            }
+
+            // Set timeout
+            if (options.timeout) {
+                xhr.timeout = options.timeout;
+            }
+
+            xhr.onload = function() {
+                try {
+                    const data = JSON.parse(xhr.responseText);
+                    resolve({
+                        success: xhr.status >= 200 && xhr.status < 300,
+                        status: xhr.status,
+                        data: data
+                    });
+                } catch (parseError) {
+                    resolve({
+                        success: false,
+                        status: xhr.status,
+                        data: { error: `Invalid JSON response: ${xhr.responseText.substring(0, 200)}...` }
+                    });
+                }
+            };
+
+            xhr.onerror = function() {
+                reject(new Error('Network error'));
+            };
+
+            xhr.ontimeout = function() {
+                reject(new Error('Request timeout'));
+            };
+
+            // Send the request
+            xhr.send(options.body || null);
+        });
+    }
 }
 
 // Initialize the app when DOM is ready
