@@ -513,6 +513,9 @@ class SXUDOChat {
         this.connectOllama.disabled = true;
         
         try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
             const response = await fetch('/api/configure-ollama', {
                 method: 'POST',
                 headers: {
@@ -521,16 +524,33 @@ class SXUDOChat {
                 body: JSON.stringify({
                     host: host,
                     port: port
-                })
+                }),
+                signal: controller.signal
             });
-            
-            let data;
-            const responseText = await response.text();
 
+            clearTimeout(timeoutId);
+
+            // Check if response body exists and is readable
+            if (!response.body) {
+                throw new Error('No response body received');
+            }
+
+            let data;
             try {
+                // Clone the response to avoid body stream issues
+                const responseClone = response.clone();
+                const responseText = await responseClone.text();
                 data = JSON.parse(responseText);
-            } catch (error) {
-                data = { error: `Invalid response: ${responseText}` };
+            } catch (parseError) {
+                console.error('Response parsing error:', parseError);
+                // Fallback: try to read as text directly
+                try {
+                    const fallbackText = await response.text();
+                    data = { error: `Invalid JSON response: ${fallbackText}` };
+                } catch (textError) {
+                    console.error('Text reading error:', textError);
+                    data = { error: `Response reading failed: ${parseError.message}` };
+                }
             }
 
             if (!response.ok) {
@@ -541,7 +561,7 @@ class SXUDOChat {
                 }
                 return;
             }
-            
+
             if (data.success) {
                 this.showOllamaStatus(`✅ Connected! Found models: ${data.models.join(', ')}`, 'success');
                 // Refresh health status
