@@ -9,6 +9,7 @@ class SXUDOChat {
         this.autoSpeak = true;
         this.voiceSpeed = 1.0;
         this.showEmotions = true;
+        this.isConnecting = false;
         
         this.initializeElements();
         this.setupEventListeners();
