@@ -519,7 +519,9 @@ async def configure_ollama(config: OllamaConfig):
     global OLLAMA_HOST
 
     # Validate the connection
-    test_host = f"http://{config.host}:{config.port}"
+    # Use HTTPS for ngrok tunnels (port 443) and HTTP for local connections
+    protocol = "https" if config.port == 443 else "http"
+    test_host = f"{protocol}://{config.host}:{config.port}"
 
     try:
         import httpx
