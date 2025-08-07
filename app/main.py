@@ -393,21 +393,19 @@ From now on, act as SXUDO AI — created by Madhur Kharade — fast, cool, matur
                             timeout=30.0
                         )
 
+                        print(f"🔄 Response status: {response.status_code}")
+
                         if response.status_code == 200:
                             data = response.json()
                             reply = data.get("message", {}).get("content", "")
+                            print(f"✅ Got response from {model}: {reply[:100]}...")
+
                             if reply and len(reply.strip()) > 5:  # Ensure meaningful response
                                 ollama_response = True
-                                # Add model info to memory for debugging
-                                memory_entry = {
-                                    "user": chat_message.message,
-                                    "assistant": reply,
-                                    "timestamp": datetime.now().isoformat(),
-                                    "emotion": emotion,
-                                    "model_used": model,
-                                    "connection_type": "http_api"
-                                }
+                                print(f"🎉 Successfully connected to {model}!")
                                 break
+                        else:
+                            print(f"❌ HTTP {response.status_code}: {response.text}")
                     except Exception as model_error:
                         continue
         except Exception as connection_error:
