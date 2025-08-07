@@ -270,7 +270,7 @@ I'm here to listen and support you through this difficult time. How are you feel
 • Processing: Running smoothly ✅
 • Emotional awareness: Active and calibrated 😊
 • Enthusiasm to help: At maximum levels! 🚀
-• Connection to Madhur's vision: Strong and clear 💡
+• Connection to Madhur's vision: Strong and clear ���
 
 🫂 **More importantly - how are YOU doing, my friend?** I'm here to listen, support, and help with whatever you're facing. Whether it's technical challenges, creative projects, or just need someone to talk through ideas with.
 
@@ -407,6 +407,7 @@ From now on, act as SXUDO AI — created by Madhur Kharade — fast, cool, matur
                         else:
                             print(f"❌ HTTP {response.status_code}: {response.text}")
                     except Exception as model_error:
+                        print(f"⚠️ Model {model} failed: {model_error}")
                         continue
         except Exception as connection_error:
             pass
