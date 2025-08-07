@@ -345,6 +345,7 @@ Always remember the user's name is {chat_message.username}. Be conversational, w
         
         # Get response from Ollama
         ollama_response = None
+        print(f"🔍 Attempting to connect to: {OLLAMA_HOST}")
 
         # Try configured Ollama host first with SXUDO model priority
         try:
@@ -355,6 +356,8 @@ Always remember the user's name is {chat_message.username}. Be conversational, w
 
                 for model in model_priority:
                     try:
+                        print(f"🤖 Trying model: {model}")
+
                         # Enhanced system prompt for SXUDO personality
                         enhanced_messages = messages.copy()
                         if model.startswith("sxudo"):
@@ -372,6 +375,8 @@ From now on, act as SXUDO AI — created by Madhur Kharade — fast, cool, matur
 
                         # Add ngrok headers if needed
                         headers = {"ngrok-skip-browser-warning": "true"} if "ngrok" in OLLAMA_HOST else {}
+
+                        print(f"📡 Making request to: {OLLAMA_HOST}/api/chat")
 
                         response = await client.post(
                             f"{OLLAMA_HOST}/api/chat",
