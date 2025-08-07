@@ -358,6 +358,195 @@ class SXUDOChat {
     closeSettings() {
         this.settingsModal.classList.add('hidden');
     }
+
+    // Image upload functionality
+    uploadImage() {
+        this.imageInput.click();
+    }
+
+    async handleImageUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+            alert('Please select an image file.');
+            return;
+        }
+
+        // Validate file size (5MB limit)
+        if (file.size > 5 * 1024 * 1024) {
+            alert('Image must be less than 5MB.');
+            return;
+        }
+
+        try {
+            // Convert to base64
+            const base64 = await this.fileToBase64(file);
+
+            // Add image message to chat
+            this.addImageMessage('user', `📸 Uploaded: ${file.name}`, base64);
+
+            // Show typing indicator
+            this.showTyping();
+
+            // Send to AI for analysis
+            const response = await fetch('/api/image-chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    image: base64,
+                    message: `Please analyze this image: ${file.name}`,
+                    username: this.username,
+                    personality: this.personality,
+                    mood: this.mood
+                })
+            });
+
+            const data = await response.json();
+
+            // Hide typing indicator
+            this.hideTyping();
+
+            if (data.reply) {
+                this.addMessage('ai', data.reply, data.emotion || '🔍');
+            } else {
+                this.addMessage('ai', 'Sorry, I had trouble analyzing that image. Please try again.', '😕');
+            }
+
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            this.hideTyping();
+            this.addMessage('ai', 'Sorry, there was an error processing your image.', '😕');
+        }
+
+        // Clear the input
+        event.target.value = '';
+    }
+
+    fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+
+    addImageMessage(type, content, imageData) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${type}-message`;
+
+        const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        messageDiv.innerHTML = `
+            <div class="message-header">
+                <span class="sender">${type === 'user' ? this.username : 'SXUDO'} 📸</span>
+                <span class="timestamp">${timestamp}</span>
+            </div>
+            <div class="message-content">
+                <img src="${imageData}" alt="Uploaded image" style="max-width: 100%; border-radius: 8px; margin-bottom: 0.5rem;">
+                <p>${content}</p>
+            </div>
+        `;
+
+        this.chatHistory.appendChild(messageDiv);
+        this.chatHistory.scrollTop = this.chatHistory.scrollHeight;
+    }
+
+    // Voice recording functionality
+    toggleVoiceRecording() {
+        if (this.isRecording) {
+            this.stopRecording();
+        } else {
+            this.startRecording();
+        }
+    }
+
+    async startRecording() {
+        try {
+            // Check if browser supports speech recognition
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                alert('Speech recognition is not supported in your browser.');
+                return;
+            }
+
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            this.recognition = new SpeechRecognition();
+
+            this.recognition.continuous = false;
+            this.recognition.interimResults = false;
+            this.recognition.lang = 'en-US';
+
+            this.recognition.onstart = () => {
+                this.isRecording = true;
+                this.voiceBtn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+                this.voiceBtn.innerHTML = '<i class="fas fa-stop"></i>';
+                this.showVoiceIndicator();
+            };
+
+            this.recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                this.userInput.value = transcript;
+                this.hideVoiceIndicator();
+                // Auto-send the message
+                this.sendMessage();
+            };
+
+            this.recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                this.stopRecording();
+                this.hideVoiceIndicator();
+            };
+
+            this.recognition.onend = () => {
+                this.stopRecording();
+                this.hideVoiceIndicator();
+            };
+
+            this.recognition.start();
+
+        } catch (error) {
+            console.error('Error starting voice recognition:', error);
+            alert('Unable to start voice recording. Please try again.');
+        }
+    }
+
+    stopRecording() {
+        if (this.recognition) {
+            this.recognition.stop();
+        }
+        this.isRecording = false;
+        this.voiceBtn.style.background = '';
+        this.voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+        this.hideVoiceIndicator();
+    }
+
+    showVoiceIndicator() {
+        // Create voice recording indicator
+        if (!this.voiceIndicator) {
+            this.voiceIndicator = document.createElement('div');
+            this.voiceIndicator.className = 'voice-recording-indicator';
+            this.voiceIndicator.innerHTML = `
+                <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                           background: rgba(0,0,0,0.8); color: white; padding: 1rem 2rem;
+                           border-radius: 10px; z-index: 2000; text-align: center;">
+                    <div style="margin-bottom: 0.5rem;">🎤 Listening...</div>
+                    <div style="font-size: 0.8rem; opacity: 0.7;">Speak now</div>
+                </div>
+            `;
+            document.body.appendChild(this.voiceIndicator);
+        }
+    }
+
+    hideVoiceIndicator() {
+        if (this.voiceIndicator) {
+            this.voiceIndicator.remove();
+            this.voiceIndicator = null;
+        }
+    }
 }
 
 // Initialize the app when DOM is ready
