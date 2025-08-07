@@ -538,6 +538,9 @@ class SXUDOChat {
 
             clearTimeout(timeoutId);
 
+            // Immediately clone the response before anything else can consume it
+            const responseClone = response.clone();
+
             console.log('Response received:', {
                 status: response.status,
                 statusText: response.statusText,
@@ -547,32 +550,21 @@ class SXUDOChat {
 
             let data;
 
-            // Check if response body is already used
-            if (response.bodyUsed) {
-                console.error('Response body already consumed before reading');
-                data = { error: 'Response body already consumed - possible network issue' };
-            } else {
-                let responseText;
+            try {
+                const responseText = await responseClone.text();
+                console.log('Response text length:', responseText.length);
 
                 try {
-                    responseText = await response.text();
-                    console.log('Response text length:', responseText.length);
-                } catch (textError) {
-                    console.error('Failed to read response text:', textError);
-                    data = { error: `Failed to read response: ${textError.message}` };
-                    responseText = null;
+                    data = JSON.parse(responseText);
+                    console.log('Parsed JSON data:', data);
+                } catch (parseError) {
+                    console.error('JSON parsing error:', parseError);
+                    console.log('Raw response:', responseText.substring(0, 500));
+                    data = { error: `Invalid JSON response: ${responseText.substring(0, 200)}...` };
                 }
-
-                if (responseText !== null) {
-                    try {
-                        data = JSON.parse(responseText);
-                        console.log('Parsed JSON data:', data);
-                    } catch (parseError) {
-                        console.error('JSON parsing error:', parseError);
-                        console.log('Raw response:', responseText.substring(0, 500));
-                        data = { error: `Invalid JSON response: ${responseText.substring(0, 200)}...` };
-                    }
-                }
+            } catch (textError) {
+                console.error('Failed to read response text:', textError);
+                data = { error: `Failed to read response: ${textError.message}` };
             }
 
             if (!response.ok) {
