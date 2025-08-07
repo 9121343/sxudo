@@ -51,6 +51,40 @@ class OllamaConfig(BaseModel):
 # Constants
 OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
 
+# Auto-detect ngrok tunnels
+NGROK_URLS = [
+    "https://9940cb96c0a3.ngrok-free.app",  # Current ngrok URL
+    "https://ed27362dcab9.ngrok-free.app",  # Previous ngrok URL
+]
+
+async def auto_configure_ollama():
+    """Automatically try to connect to available Ollama instances"""
+    global OLLAMA_HOST
+
+    # First try the configured host
+    if await test_ollama_connection(OLLAMA_HOST):
+        return OLLAMA_HOST
+
+    # Try ngrok URLs
+    for ngrok_url in NGROK_URLS:
+        if await test_ollama_connection(ngrok_url):
+            OLLAMA_HOST = ngrok_url
+            os.environ["OLLAMA_HOST"] = ngrok_url
+            return ngrok_url
+
+    return None
+
+async def test_ollama_connection(host_url):
+    """Test if Ollama is available at the given URL"""
+    try:
+        import httpx
+        headers = {"ngrok-skip-browser-warning": "true"} if "ngrok" in host_url else {}
+        async with httpx.AsyncClient() as client:
+            response = await client.get(f"{host_url}/api/version", timeout=5.0, headers=headers)
+            return response.status_code == 200
+    except:
+        return False
+
 def generate_intelligent_demo_response(message: str, username: str, history: list) -> str:
     """Generate intelligent demo responses when Ollama is not available"""
     message_lower = message.lower().strip()
