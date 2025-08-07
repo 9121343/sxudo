@@ -519,14 +519,21 @@ async def configure_ollama(config: OllamaConfig):
     global OLLAMA_HOST
 
     # Validate the connection
-    # Use HTTPS for ngrok tunnels (port 443) and HTTP for local connections
-    protocol = "https" if config.port == 443 else "http"
-    test_host = f"{protocol}://{config.host}:{config.port}"
+    # Handle ngrok tunnels properly
+    if config.port == 443 and "ngrok" in config.host:
+        # For ngrok tunnels, use HTTPS without port and add ngrok-skip-browser-warning header
+        test_host = f"https://{config.host}"
+        headers = {"ngrok-skip-browser-warning": "true"}
+    else:
+        # For local connections
+        protocol = "https" if config.port == 443 else "http"
+        test_host = f"{protocol}://{config.host}:{config.port}"
+        headers = {}
 
     try:
         import httpx
         async with httpx.AsyncClient() as client:
-            response = await client.get(f"{test_host}/api/version", timeout=5.0)
+            response = await client.get(f"{test_host}/api/version", timeout=10.0, headers=headers)
             if response.status_code == 200:
                 OLLAMA_HOST = test_host
                 os.environ["OLLAMA_HOST"] = test_host
