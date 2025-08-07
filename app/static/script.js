@@ -501,14 +501,21 @@ class SXUDOChat {
     }
     
     async connectToOllama() {
+        // Prevent multiple simultaneous calls
+        if (this.isConnecting) {
+            console.log('Connection already in progress, ignoring duplicate call');
+            return;
+        }
+
         const host = this.ollamaHost.value.trim();
         const port = parseInt(this.ollamaPort.value) || 11434;
-        
+
         if (!host) {
             this.showOllamaStatus('Please enter your computer\'s IP address', 'error');
             return;
         }
-        
+
+        this.isConnecting = true;
         this.showOllamaStatus('Connecting...', 'info');
         this.connectOllama.disabled = true;
         
