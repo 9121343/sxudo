@@ -525,12 +525,13 @@ class SXUDOChat {
         this.isConnecting = true;
         this.showOllamaStatus('Connecting...', 'info');
         this.connectOllama.disabled = true;
-        
+
         try {
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
 
-            const response = await fetch('/api/configure-ollama', {
+            // Use XMLHttpRequest as a fallback to avoid fetch response body issues
+            const result = await this.makeRequest('/api/configure-ollama', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -539,79 +540,27 @@ class SXUDOChat {
                     host: host,
                     port: port
                 }),
-                signal: controller.signal
+                timeout: 30000
             });
 
             clearTimeout(timeoutId);
 
-            console.log('Response received:', {
-                status: response.status,
-                statusText: response.statusText,
-                ok: response.ok,
-                bodyUsed: response.bodyUsed
-            });
+            console.log('Request result:', result);
 
-            let data;
-
-            // Use a more robust approach that doesn't depend on response.clone()
-            try {
-                // Try to get the response as an array buffer first, then convert to text
-                let responseText;
-
-                if (response.bodyUsed) {
-                    // If body is already used, we can't read it - create an error response
-                    console.error('Response body was already consumed');
-                    data = { error: 'Response body already consumed by another process' };
-                } else {
-                    try {
-                        // Use arrayBuffer() as it's more reliable than text() in some cases
-                        const buffer = await response.arrayBuffer();
-                        responseText = new TextDecoder().decode(buffer);
-                        console.log('Response text length:', responseText.length);
-                    } catch (bufferError) {
-                        console.error('Failed to read as buffer, trying text():', bufferError);
-                        try {
-                            responseText = await response.text();
-                        } catch (textError) {
-                            console.error('Failed to read as text too:', textError);
-                            throw new Error(`Cannot read response: ${textError.message}`);
-                        }
-                    }
-
-                    // Parse the response text as JSON
-                    try {
-                        data = JSON.parse(responseText);
-                        console.log('Parsed JSON data:', data);
-                    } catch (parseError) {
-                        console.error('JSON parsing error:', parseError);
-                        console.log('Raw response:', responseText.substring(0, 500));
-                        data = { error: `Invalid JSON response: ${responseText.substring(0, 200)}...` };
-                    }
-                }
-            } catch (error) {
-                console.error('Complete response reading failure:', error);
-                data = { error: `Failed to read response: ${error.message}` };
-            }
-
-            if (!response.ok) {
-                if (response.status === 400) {
-                    this.showOllamaStatus(`❌ ${data.error}\n💡 ${data.suggestion || 'Make sure Ollama is running and accessible'}`, 'error');
-                } else {
-                    this.showOllamaStatus(`❌ Connection failed: ${data.error || `HTTP ${response.status}`}`, 'error');
-                }
-                return;
-            }
-
-            if (data.success) {
-                this.showOllamaStatus(`✅ Connected! Found models: ${data.models.join(', ')}`, 'success');
+            if (result.success) {
+                this.showOllamaStatus(`✅ Connected! Found models: ${result.data.models.join(', ')}`, 'success');
                 // Refresh health status
                 setTimeout(() => this.checkHealth(), 1000);
             } else {
-                this.showOllamaStatus(`❌ ${data.error}`, 'error');
+                if (result.status === 400) {
+                    this.showOllamaStatus(`❌ ${result.data.error}\n💡 ${result.data.suggestion || 'Make sure Ollama is running and accessible'}`, 'error');
+                } else {
+                    this.showOllamaStatus(`❌ Connection failed: ${result.data.error || `HTTP ${result.status}`}`, 'error');
+                }
             }
         } catch (error) {
             console.error('Connection error:', error);
-            if (error.name === 'AbortError') {
+            if (error.name === 'AbortError' || error.message.includes('timeout')) {
                 this.showOllamaStatus(`❌ Connection timeout: Request took too long\n💡 Check if ${host}:${port} is reachable`, 'error');
             } else if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
                 this.showOllamaStatus(`❌ Network error: Cannot reach ${host}:${port}\n💡 Check if the IP address is correct and Ollama is running`, 'error');
@@ -622,6 +571,54 @@ class SXUDOChat {
             this.isConnecting = false;
             this.connectOllama.disabled = false;
         }
+    }
+
+    // Helper method using XMLHttpRequest to avoid fetch response body issues
+    makeRequest(url, options) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open(options.method || 'GET', url);
+
+            // Set headers
+            if (options.headers) {
+                Object.keys(options.headers).forEach(key => {
+                    xhr.setRequestHeader(key, options.headers[key]);
+                });
+            }
+
+            // Set timeout
+            if (options.timeout) {
+                xhr.timeout = options.timeout;
+            }
+
+            xhr.onload = function() {
+                try {
+                    const data = JSON.parse(xhr.responseText);
+                    resolve({
+                        success: xhr.status >= 200 && xhr.status < 300,
+                        status: xhr.status,
+                        data: data
+                    });
+                } catch (parseError) {
+                    resolve({
+                        success: false,
+                        status: xhr.status,
+                        data: { error: `Invalid JSON response: ${xhr.responseText.substring(0, 200)}...` }
+                    });
+                }
+            };
+
+            xhr.onerror = function() {
+                reject(new Error('Network error'));
+            };
+
+            xhr.ontimeout = function() {
+                reject(new Error('Request timeout'));
+            };
+
+            // Send the request
+            xhr.send(options.body || null);
+        });
     }
     
     showOllamaStatus(message, type) {
